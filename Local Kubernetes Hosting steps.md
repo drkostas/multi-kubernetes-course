@@ -10,6 +10,7 @@ Install kubectl and minikube
 `kubectl cluster-info`
 `minikube status`
 
+
 ## Setup
 Create all the Dockerfiles needed
 Create all the .yaml configuration files for Kubernetes under `k8s`
@@ -23,7 +24,6 @@ Create all the .yaml configuration files for Kubernetes under `k8s`
 ### Install ingress-nginx
 `kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/provider/cloud-generic.yaml`
 `minikube addons enable ingress`
-
 
 
 ## Management
