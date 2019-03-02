@@ -1,0 +1,20 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: drkostas-k8s-tk-tls
+spec:
+  secretName: drkostas-k8s-tk
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: drkostas-k8s.tk
+  dnsNames:
+    - drkostas-k8s.tk
+    - www.drkostas-k8s.tk
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - drkostas-k8s.tk
+          - www.drkostas-k8s.tk
