@@ -6,7 +6,6 @@
 1. Create a Github repo and connect it to Travis
 
 
-
 ## Connect GC and Travis
 1. Go to Google Cloud and go to IAM
 1. Create a service account and a secret key
@@ -23,7 +22,8 @@ Copy the service-acount.json into the volume
 
 ### Generate an encrypted service-account key
 `travis encrypt-file service-account.json -r drkostas/multi-kubernetes-course`
-<Copy the encrypted key into the root of your git repo and DELETE the unencrypted one
+Copy the encrypted key into the root of your git repo and DELETE the unencrypted one
+
 
 ## Set PGPASSWORD in Google cloud using `Secret`
 ### Open `activate cloud shell` in GC dashboard and run:
@@ -31,7 +31,6 @@ Copy the service-acount.json into the volume
 `gcloud config set compute/zone us-central1-a`
 `gcloud container clusters get-credentials multi-cluster`
 `kubectl create secret generic pgpassword --from-literal PGPASSWORD= a password`
-
 
 
 ## Install and run Helm
@@ -51,3 +50,14 @@ Copy the service-acount.json into the volume
 
 ### Install nginx-ingress using heml/tiller
 `helm install stable/nginx-ingress --name my-nginx --set rbac.create=true`
+
+
+## Setup Https
+### Install heml cert-manager
+`helm install --name cert-manager --namespace kube-system --version v0.4.1 stable/cert-manager`
+Create an issuer.yaml and a certificate.yaml under k8s
+
+
+## Finished
+Push your latest changes and visit the ip that show up next to the ingress-nginx controller under Services in Google Cloud
+
