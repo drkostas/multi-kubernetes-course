@@ -1,0 +1,32 @@
+sudo: required
+services:
+  - docker
+env:
+  global:
+    # We get the git sha id in order to set it as version name of the new images
+    - SHA=$(git rev-parse HEAD)
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+# Connect with GoogleCloud and Docker and build the test image
+before_install:
+  - openssl aes-256-cbc -K $encrypted_9f9c4c28b48d_key -iv $encrypted_9f9c4c28b48d_iv -in service-account.json.enc -out service-account.json -d
+  - curl https://sdk.cloud.google.com | bash > /dev/null;
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  - gcloud components update kubectl
+  - gcloud auth activate-service-account --key-file service-account.json
+  - gcloud config set project multi-k8s-233222
+  - gcloud config set compute/zone us-central1-a  
+  - gcloud container clusters get-credentials multi-cluster
+  # Login to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t drkostas/react-test -f ./client/Dockerfile.dev ./client
+
+# Run the tests for the client
+script:
+  # the `-- --coverage` triggers the test to exit after finishing (with exit code)
+  - docker run drkostas/react-test npm run test -- --coverage
+
+deploy:
+  provider: script # Custom deployment
+  script: bash ./deploy.sh
+  on:
+    branch: master
