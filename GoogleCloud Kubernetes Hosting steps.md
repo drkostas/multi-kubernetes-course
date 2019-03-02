@@ -51,3 +51,6 @@ Copy the service-acount.json into the volume
 
 ### Install nginx-ingress using heml/tiller
 `helm install stable/nginx-ingress --name my-nginx --set rbac.create=true`
+
+### Finished
+Push your latest changes and visit the ip that show up next to the ingress-nginx controller under Services in Google Cloud
